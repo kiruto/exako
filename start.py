@@ -7,4 +7,4 @@ def hello(path):
     return "Hello Exako!"
 
 if __name__ == "__main__":
-    app.run(80)
+    app.run(port=80)
