@@ -1,10 +1,13 @@
-from flask import Flask
-app = Flask(__name__)
+# -*- coding: utf-8 -*-
+from application import app
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+from tornado.wsgi import WSGIContainer
 
-
-@app.route("/")
-def hello():
-    return "Hello Exako!"
+import config
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    # app.run(host="0.0.0.0", port=80)
+    http_server = HTTPServer(WSGIContainer(app))
+    http_server.listen(config.HTTP_PORT)
+    IOLoop.instance().start()
