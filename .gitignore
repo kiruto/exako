@@ -1,2 +1,4 @@
 .idea/
 venv/
+sentry_venv/
+local_properties.py

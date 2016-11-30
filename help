@@ -1,0 +1,9 @@
+Run NGINX:
+[SUDO] /usr/local/webserver/nginx/sbin/nginx
+
+Run MariaDB:
+/etc/init.d/mysql start
+
+Run tornado:
+venv$ source bin/activate
+[VENV] exako$ nohup sudo venv/bin/python start.py &
