@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import database
+from database.ako_data import AkoData
 
 database.exec_sql_file('user_create_table.sql')
 
 
-class User:
+class User(AkoData):
     uid = 0
     create_at = 0
     name = ''
