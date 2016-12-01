@@ -54,3 +54,4 @@ routing_tree = {
     }
 }
 routing.tree(**routing_tree)
+routing.save_mapping_info()
