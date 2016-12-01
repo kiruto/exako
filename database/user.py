@@ -14,7 +14,7 @@ class User(AkoData):
     extra = {}
 
     def __init__(self, *args):
-        pass
+        super().__init__()
 
     def save(self):
         if self.uid:

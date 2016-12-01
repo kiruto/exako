@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
-class VersionNotFoundException(ValueError):
+class XVersionNotFoundException(ValueError):
     """
     Try to use a wrong version value.
     """
     pass
+
+
+class XRoutingException(Exception):
+    """
+    Routing helper exception
+    """

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from exceptions import VersionNotFoundException
+from exceptions import XVersionNotFoundException
 
 latest_version = None
 
@@ -19,14 +19,14 @@ def find_version_by_name(name: '0.0.1') -> Version:
     for v in _version:
         if v.name == name:
             return v
-    raise VersionNotFoundException
+    raise XVersionNotFoundException
 
 
 def find_version_by_code(code: 1) -> Version:
     for v in _version:
         if v.code == code:
             return v
-    raise VersionNotFoundException
+    raise XVersionNotFoundException
 
 
 def register_version(version: Version=None, code: 1=None, name: '0.0.1'=None):

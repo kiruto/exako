@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import database
 from database.ako_data import AkoData
-
-database.exec_sql_file('activity_create_table.sql')
+from database.tables import tables
 
 
 class Activity(AkoData):
@@ -16,6 +14,6 @@ class Activity(AkoData):
     tag = list()
     extra = dict
 
+    @tables.table(name='ako_activity', file='activity_create_table.sql')
     def __init__(self):
-        pass
-
+        super().__init__()

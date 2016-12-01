@@ -6,4 +6,5 @@ database.exec_sql_file('tag_create_table.sql')
 
 
 class Tag(AkoData):
-    pass
+    def __init__(self):
+        super().__init__()
