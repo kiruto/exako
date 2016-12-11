@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from exceptions import XVersionNotFoundException
+from src.exceptions import XVersionNotFoundException
 
 latest_version = None
 

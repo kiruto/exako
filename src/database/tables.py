@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import database
+from src import database
 
 
 class Tables:

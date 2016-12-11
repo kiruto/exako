@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
 
-from routing import RoutingHelper
+from src.routing import RoutingHelper
 
 app = Flask(__name__)
 routing = RoutingHelper(app)
@@ -51,6 +51,9 @@ routing_tree = {
         'route_depth_1_0': {
             'route_depth_2_0': depth_2_0
         }
+    },
+    'rest': {
+        
     }
 }
 routing.tree(**routing_tree)

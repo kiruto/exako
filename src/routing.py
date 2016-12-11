@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from src import environment
 from flask import Flask
 from werkzeug.routing import Rule
 
-import environment
-from exceptions import XRoutingException
+from src.exceptions import XRoutingException
 
 URL_MAPPING_FILE = environment.get_file('route_map.txt')
 

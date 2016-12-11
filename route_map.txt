@@ -1,3 +1,0 @@
-/route_depth_0_1/route_depth_1_0/route_depth_2_0/<path:path>	application.depth_2_0
-/route_depth_0_0/route_depth_1_1	application.depth_1_1
-/route_depth_0_0/route_depth_1_0	application.depth_1_0

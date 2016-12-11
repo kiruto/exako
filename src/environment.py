@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 
+DEBUG = True
+RELEASE = not DEBUG
 CURRENT_PATH = os.path.dirname(__file__) + os.sep
 
 

@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS ako_activity
 (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     platform CHAR,
     source_url TEXT,
     created_at TIMESTAMP DEFAULT current_timestamp,

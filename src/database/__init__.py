@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as MariaDB
+from common import print_stack_trace
 
 import config
-import environment
-from utils import print_stack_trace
+from src import environment
 
 maria_db_connection = MariaDB.connect(user=config.MARIA_USER,
                                       password=config.MARIA_PASSWORD,

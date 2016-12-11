@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import database
+from src import database
 
 
 class AkoData:
@@ -8,7 +8,7 @@ class AkoData:
         pass
 
     @classmethod
-    def create(cls, *args) -> database.AkoData:
+    def create(cls, *args):
         return None
 
     @classmethod
