@@ -26,3 +26,10 @@ message User {
   string mail = 5;
   string extra = 6;
 }
+
+message Meta {
+  string id = 1;
+  string name = 2;
+  string value = 3;
+  string lang = 4;
+}

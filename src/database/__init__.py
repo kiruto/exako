@@ -37,6 +37,16 @@ def exec_query(query: str, args: list=None):
         return result
 
 
+def exec_many(query: str, args: list):
+    result = cursor.executemany(query, args)
+    if not result:
+        return None
+    elif len(result) == 1:
+        return result[0]
+    else:
+        return result
+
+
 def search_one_or_none(query: str, args: list=None):
     result = exec_query(query, args)
     return None if not result else result[0]

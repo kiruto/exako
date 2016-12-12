@@ -4,20 +4,60 @@ from src import database
 
 class AkoData:
 
+    fields = None
+    unique = None
+
     def __init__(self):
+        self.table_name = ''
         pass
 
     @classmethod
     def create(cls, *args):
-        return None
+        pass
 
     @classmethod
-    def find_one(cls, fun, query: str, *args: str):
+    def batch_save(cls, lst):
+        fields = str(cls.fields)
+        field_stub = ','.join(['?'] * len(cls.fields))
+        values = list(set(cls.fields) - set(cls.unique))
+        value_stub = []
+        for v in values:
+            value_stub.append('%s = VALUES(%s)' % (v, v))
+        value_stub = ','.join(value_stub)
+
+        data_list = []
+        for l in lst:
+            data_list.append(l.to_tuple())
+
+        query = """
+        INSERT INTO userfan
+            {fields}
+        VALUES
+            ({field_stubs})
+        ON DUPLICATE KEY UPDATE
+            {value_stub} ;
+                   """.format(fields=fields, field_stubs=field_stub, value_stub=value_stub)
+        database.exec_many(query, data_list)
+
+    def save(self):
+        pass
+
+    def to_tuple(self):
+        pass
+
+    def map_field(self, fields):
+        self.__class__.fields = fields
+
+    def map_unique(self, fields):
+        self.__class__.unique = fields
+
+    @classmethod
+    def find_one(cls, query: str, *args: str):
         if not args:
             args = None
 
-        def decorator(stub=None):
-            result = stub if stub else database.search_one_or_none(query, args)
+        def decorator(fun):
+            result = database.search_one_or_none(query, args)
             instance = fun(result)
             if isinstance(instance, cls):
                 return instance
@@ -26,12 +66,12 @@ class AkoData:
         return decorator
 
     @classmethod
-    def for_all(cls, fun, query: str, *args: str):
+    def for_all(cls, query: str, *args: str):
         if not args:
             args = None
 
-        def decorator(stub=None):
-            result = stub if stub else database.exec_query(query, args)
+        def decorator(fun):
+            result = database.exec_query(query, args)
             result_list = list()
             if isinstance(result, list):
                 for r in result:

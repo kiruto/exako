@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import database
+from database.tables import tables
 
 from src.database.ako_data import AkoData
 
-database.exec_sql_file('tag_create_table.sql')
-
 
 class Tag(AkoData):
+
+    @tables.src(name='ako_tag', file='tag_create_table.sql')
     def __init__(self):
         super().__init__()

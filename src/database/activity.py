@@ -5,16 +5,16 @@ from src.database.ako_data import AkoData
 
 
 class Activity(AkoData):
-    id = 0
-    platform = ''
-    source_url = ''
-    created_at = 0
-    title = ''
-    description = ''
-    thumbnail_url = ''
-    tag = list()
-    extra = dict
 
-    @tables.table(name='ako_activity', file='activity_create_table.sql')
+    @tables.src(name='ako_activity', file='activity_create_table.sql')
     def __init__(self):
         super().__init__()
+        self.id = 0
+        self.platform = ''
+        self.source_url = ''
+        self.created_at = 0
+        self.title = ''
+        self.description = ''
+        self.thumbnail_url = ''
+        self.tag = list()
+        self.extra = dict

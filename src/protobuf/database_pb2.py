@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='database.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x0e\x64\x61tabase.proto\"\xa7\x01\n\x08\x41\x63tivity\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08platform\x18\x02 \x01(\t\x12\x12\n\nsource_url\x18\x03 \x01(\t\x12\x12\n\ncreated_at\x18\x04 \x01(\t\x12\r\n\x05title\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x15\n\rthumbnail_url\x18\x07 \x01(\t\x12\x0b\n\x03tag\x18\x08 \x01(\t\x12\r\n\x05\x65xtra\x18\t \x01(\t\".\n\x03Tag\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x65xtra\x18\x03 \x01(\t\"c\n\x04User\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x11\n\tcreate_at\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0c\n\x04mail\x18\x05 \x01(\t\x12\r\n\x05\x65xtra\x18\x06 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\x0e\x64\x61tabase.proto\"\xa7\x01\n\x08\x41\x63tivity\x12\n\n\x02id\x18\x01 \x01(\t\x12\x10\n\x08platform\x18\x02 \x01(\t\x12\x12\n\nsource_url\x18\x03 \x01(\t\x12\x12\n\ncreated_at\x18\x04 \x01(\t\x12\r\n\x05title\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x06 \x01(\t\x12\x15\n\rthumbnail_url\x18\x07 \x01(\t\x12\x0b\n\x03tag\x18\x08 \x01(\t\x12\r\n\x05\x65xtra\x18\t \x01(\t\".\n\x03Tag\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05\x65xtra\x18\x03 \x01(\t\"c\n\x04User\x12\x0b\n\x03uid\x18\x01 \x01(\t\x12\x11\n\tcreate_at\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0c\n\x04mail\x18\x05 \x01(\t\x12\r\n\x05\x65xtra\x18\x06 \x01(\t\"=\n\x04Meta\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x0c\n\x04lang\x18\x04 \x01(\tb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -223,9 +223,62 @@ _USER = _descriptor.Descriptor(
   serialized_end=335,
 )
 
+
+_META = _descriptor.Descriptor(
+  name='Meta',
+  full_name='Meta',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='Meta.id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='Meta.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='Meta.value', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='lang', full_name='Meta.lang', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=337,
+  serialized_end=398,
+)
+
 DESCRIPTOR.message_types_by_name['Activity'] = _ACTIVITY
 DESCRIPTOR.message_types_by_name['Tag'] = _TAG
 DESCRIPTOR.message_types_by_name['User'] = _USER
+DESCRIPTOR.message_types_by_name['Meta'] = _META
 
 Activity = _reflection.GeneratedProtocolMessageType('Activity', (_message.Message,), dict(
   DESCRIPTOR = _ACTIVITY,
@@ -247,6 +300,13 @@ User = _reflection.GeneratedProtocolMessageType('User', (_message.Message,), dic
   # @@protoc_insertion_point(class_scope:User)
   ))
 _sym_db.RegisterMessage(User)
+
+Meta = _reflection.GeneratedProtocolMessageType('Meta', (_message.Message,), dict(
+  DESCRIPTOR = _META,
+  __module__ = 'database_pb2'
+  # @@protoc_insertion_point(class_scope:Meta)
+  ))
+_sym_db.RegisterMessage(Meta)
 
 
 # @@protoc_insertion_point(module_scope)

@@ -4,6 +4,7 @@ import os
 DEBUG = True
 RELEASE = not DEBUG
 CURRENT_PATH = os.path.dirname(__file__) + os.sep
+SQL = 'sql'
 
 
 def get_dir(*paths):
@@ -30,6 +31,13 @@ def create(*paths):
     def decorator(fun):
         return fun(abs_path)
     return decorator
+
+
+SQL_PATH = get_dir(SQL)
+
+
+def get_sql_file(file_name: str):
+    return get_file('sql', file_name)
 
 
 STATIC_PATH = get_or_create('static')
