@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-HTTP_PORT = 8000
+HTTP_PORT = 8249
 
 MARIA_SERVER = '127.0.0.1'
 MARIA_USER = 'exako'

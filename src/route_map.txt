@@ -1,3 +1,3 @@
-/route_depth_0_1/route_depth_1_0/route_depth_2_0/<path:path>	src.application.depth_2_0
-/route_depth_0_0/route_depth_1_0	src.application.depth_1_0
-/route_depth_0_0/route_depth_1_1	src.application.depth_1_1
+/route_depth_0_0/route_depth_1_0	routing.depth_1_0
+/route_depth_0_0/route_depth_1_1	routing.depth_1_1
+/route_depth_0_1/route_depth_1_0/route_depth_2_0/<path:path>	routing.depth_2_0

@@ -1,21 +1,30 @@
 # -*- coding: utf-8 -*-
 import os
+import subprocess
 import sys
 
-import subprocess
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.wsgi import WSGIContainer
 
+import admin
 import config
-from src.environment import get_dir
-from src.application import app
+import sql_alchemy
+from application import app
+from environment import get_dir
+
+import routing
 
 
 def start_service():
     # app.run(host="0.0.0.0", port=80)
+    sql_alchemy.db.init_app(app)
+    routing.init_app(app)
+    admin.init_console(app, sql_alchemy.db)
+
     http_server = HTTPServer(WSGIContainer(app))
-    http_server.listen(config.HTTP_PORT)
+    http_server.bind(config.HTTP_PORT)
+    http_server.start(0)
     IOLoop.instance().start()
 
 

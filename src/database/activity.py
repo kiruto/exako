@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from database.tables import tables
 
-from src.database.ako_data import AkoData
+from database.ako_data import AkoData
 
 
 class Activity(AkoData):

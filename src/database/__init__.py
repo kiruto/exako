@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+import os
+
 import MySQLdb as MariaDB
-from common import print_stack_trace
 
 import config
-from src import environment
+from common import print_stack_trace
+import environment
 
 maria_db_connection = MariaDB.connect(user=config.MARIA_USER,
                                       password=config.MARIA_PASSWORD,
@@ -11,8 +13,10 @@ maria_db_connection = MariaDB.connect(user=config.MARIA_USER,
 cursor = maria_db_connection.cursor()
 
 
-def exec_sql_file(*file_path: str):
-    path = environment.get_file('database', *file_path)
+def exec_sql_file(*file_name: str):
+    path = environment.get_file('sql', *file_name)
+    if not os.path.exists(path):
+        return
     file = open(path, 'r')
     sql = file.read()
     file.close()

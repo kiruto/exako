@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from src import environment
+import environment
 from flask import Flask
 from werkzeug.routing import Rule
 
-from src.exceptions import XRoutingException
+from exceptions import XRoutingException
 
 URL_MAPPING_FILE = environment.get_file('route_map.txt')
 
 
 class RoutingHelper:
-
     def __init__(self, app: Flask):
         self._app = app
         self._mapping = ''
@@ -22,6 +21,7 @@ class RoutingHelper:
                 defaults = None if ('<path:path>' in path_string) else {'path': None}
                 self._map(path_string, fun, defaults=defaults)
             return
+
         return decorator
 
     def tree(self, current_path='', **kwargs):
@@ -56,6 +56,7 @@ class RoutingHelper:
     }):
         def decorator(fun):
             return fun, rule, options
+
         return decorator
 
     def _map(self, rule: str, fun, **options):
@@ -75,3 +76,45 @@ class RouteFunctionWrapper:
 
     def __call__(self, **kwargs):
         return self.fun(**kwargs)
+
+
+def init_app(app):
+
+    routing = RoutingHelper(app)
+
+    @app.route('/')
+    def hp():
+        return 'hello exako'
+
+    def depth_0_1():
+        return '0,1'
+
+    def depth_0_2():
+        return '0,2'
+
+    def depth_1_0():
+        return '1,0'
+
+    def depth_1_1():
+        return '1,1'
+
+    @routing.args('/<path:path>', methods=['GET'])
+    def depth_2_0(path):
+        return '2,0' + path
+
+    routing_tree = {
+        'route_depth_0_0': {
+            'route_depth_1_0': depth_1_0,
+            'route_depth_1_1': depth_1_1
+        },
+        'route_depth_0_1': {
+            'route_depth_1_0': {
+                'route_depth_2_0': depth_2_0
+            }
+        },
+        'rest': {
+
+        }
+    }
+    routing.tree(**routing_tree)
+    routing.save_mapping_info()

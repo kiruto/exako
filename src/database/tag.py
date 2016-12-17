@@ -2,7 +2,7 @@
 import database
 from database.tables import tables
 
-from src.database.ako_data import AkoData
+from database.ako_data import AkoData
 
 
 class Tag(AkoData):
