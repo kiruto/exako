@@ -48,4 +48,3 @@ class AkoSettings(db.Model):
     name = db.Column('name', db.String(255), nullable=False)
     value = db.Column('value', db.Text)
     comment = db.Column('comment', db.Text)
-

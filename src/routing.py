@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-
+import json
+
+from flask import request
 
 import environment
 from flask import Flask
 from werkzeug.routing import Rule
 
+import protobuf
+import runtime_context
+import sql_alchemy
 from exceptions import XRoutingException
+from protobuf import database_pb2
+from protobuf import rest_request_pb2
+from rest.request import parse_request_dict
+from rest.response import parse_buf, proto_response
+from sql_alchemy.databases import AkoSiteMeta, AkoLang
 
 URL_MAPPING_FILE = environment.get_file('route_map.txt')
 
@@ -82,6 +93,20 @@ def init_app(app):
 
     routing = RoutingHelper(app)
 
+    def request_arg():
+        arg = request.args.get('buf')
+        request_dict = {}
+        if arg:
+            arg = rest_request_pb2.Request.ParseFromString(arg)
+            request_dict = parse_request_dict(request_arg)
+        return arg, request_dict
+
+    def lang(lang: str):
+        for l in runtime_context.langs:
+            if lang == l.name:
+                return l
+        return None
+
     @app.route('/')
     def hp():
         return 'hello exako'
@@ -98,6 +123,20 @@ def init_app(app):
     def depth_1_1():
         return '1,1'
 
+    def site_meta():
+        print(request_arg)
+        l = 'en'
+        arg, arg_dict = request_arg()
+        if 'lang' in request_arg():
+            l = arg_dict['lang']
+            print(arg_dict['lang'])
+
+        meta = AkoSiteMeta.query.filter_by(lang=lang(l)).all()
+        contents = []
+        for m in meta:
+            contents.append(parse_buf(database_pb2.Meta(), name=m.name, value=m.value, lang=str(m.lang)))
+        return proto_response(contents)
+
     @routing.args('/<path:path>', methods=['GET'])
     def depth_2_0(path):
         return '2,0' + path
@@ -113,7 +152,7 @@ def init_app(app):
             }
         },
         'rest': {
-
+            'meta': site_meta
         }
     }
     routing.tree(**routing_tree)

@@ -14,13 +14,16 @@ from application import app
 from environment import get_dir
 
 import routing
+from runtime_context import init_runtime_context
 
 
 def start_service():
     # app.run(host="0.0.0.0", port=80)
     sql_alchemy.db.init_app(app)
-    routing.init_app(app)
+    with app.app_context():
+        init_runtime_context()
     admin.init_console(app, sql_alchemy.db)
+    routing.init_app(app)
 
     http_server = HTTPServer(WSGIContainer(app))
     http_server.bind(config.HTTP_PORT)
