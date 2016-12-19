@@ -1,8 +1,11 @@
 # require venv path for python 3.5.2
-virtualenv venv -p python3
-source venv/bin/activate
-pip install -r requirements.txt
+if [ ! -d "venv" ]; then
+	echo building environment...
+	virtualenv venv -p python3
+	source venv/bin/activate
+	pip install -r requirements.txt
+fi
 
 # Init maria database
 echo Please input password for mysql root user:
-mysql -u user -p < install.sql
+mysql -u root -p < install.sql
