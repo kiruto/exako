@@ -2,3 +2,4 @@
 venv/
 sentry_venv/
 src/local_properties.py
+*.iml

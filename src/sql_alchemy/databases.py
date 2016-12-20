@@ -28,6 +28,7 @@ class AkoActivity(db.Model):
 class AkoLang(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     name = db.Column('name', db.String(20), unique=True, nullable=False)
+    meta_list = db.relationship('AkoMetaValue', backref='lang')
 
     def __str__(self):
         return self.name
@@ -37,9 +38,19 @@ class AkoLang(db.Model):
 class AkoSiteMeta(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     name = db.Column('name', db.String(60), nullable=False)
-    value = db.Column('value', db.Text)
+    comment = db.Column('comment', db.Text)
+    value = db.relationship('AkoMetaValue', backref='meta_info')
+
+    def __str__(self):
+        return '%s: %s' % (self.name, self.comment)
+
+
+@create_table('meta_value_create_table.sql')
+class AkoMetaValue(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    meta_id = db.Column('key_name', db.Integer, db.ForeignKey(AkoSiteMeta.id), nullable=False)
     lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id), nullable=False)
-    lang = db.relationship(AkoLang)
+    value = db.Column('value', db.Text)
 
 
 @create_table('settings_create_table.sql')

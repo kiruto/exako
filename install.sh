@@ -7,5 +7,6 @@ if [ ! -d "venv" ]; then
 fi
 
 # Init maria database
+echo Init database...
 echo Please input password for mysql root user:
 mysql -u root -p < install.sql
