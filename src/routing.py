@@ -15,7 +15,7 @@ from protobuf import database_pb2
 from protobuf import rest_request_pb2
 from rest.request import parse_request_dict
 from rest.response import parse_buf, proto_response
-from sql_alchemy.databases import AkoSiteMeta, AkoLang
+from sql_alchemy.databases import AkoSiteMeta, AkoLang, AkoMetaValue
 
 URL_MAPPING_FILE = environment.get_file('route_map.txt')
 
@@ -131,10 +131,10 @@ def init_app(app):
             l = arg_dict['lang']
             print(arg_dict['lang'])
 
-        meta = AkoSiteMeta.query.filter_by(lang=lang(l)).all()
+        meta = AkoMetaValue.query.filter_by(lang=lang(l)).all()
         contents = []
         for m in meta:
-            contents.append(parse_buf(database_pb2.Meta(), name=m.name, value=m.value, lang=str(m.lang)))
+            contents.append(parse_buf(database_pb2.Meta(), name=m.meta_info.name, value=m.value, lang=str(m.lang)))
         return proto_response(contents)
 
     @routing.args('/<path:path>', methods=['GET'])

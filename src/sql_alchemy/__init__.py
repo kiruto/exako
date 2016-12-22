@@ -1,40 +1,46 @@
 # -*- coding: utf-8 -*-
 import json
 
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import event
 
-# from sqlalchemy import Column
-# from sqlalchemy import Integer
-# from sqlalchemy import MetaData
-# from sqlalchemy import String
-# from sqlalchemy import TIMESTAMP
-# from sqlalchemy import Table
-# from sqlalchemy import Text
-# from sqlalchemy import create_engine
-#
-# from config import MARIA_USER, MARIA_PASSWORD, MARIA_SERVER, MARIA_DATABASE
+import database
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
 db = SQLAlchemy()
+table_create_scripts = dict()
 
-# engine = create_engine("mysql://%s:%s@%s:3306/%s?charset=utf8" % (MARIA_USER, MARIA_PASSWORD, MARIA_SERVER, MARIA_DATABASE)
-#                        , encoding="utf-8", echo=True)
-# metadata = MetaData()
-# table_activity = Table('ako_activity', metadata,
-#                        Column('id', Integer, primary_key=True),
-#                        Column('platform', String),
-#                        Column('source_url', Text),
-#                        Column('create_at', TIMESTAMP),
-#                        Column('title', Text),
-#                        Column('description', Text),
-#                        Column('thumbnail_url', Text),
-#                        Column('tag', String),
-#                        Column('extra', Text))
-# table_site_meta = Table('ako_tag', metadata,
-#                         Column('id', Integer, primary_key=True),
-#                         Column('name', String),
-#                         Column('extra', Text))
-# conn = engine.connect()
+
+class ModelConfig:
+    def __init__(self, cls, file=None, script=None):
+        self.cls = cls
+        self.file = file
+        self.script = script
+        self()
+
+    def __call__(self, *args, **kwargs):
+        if self.file:
+            database.exec_sql_file(self.file)
+        if self.script:
+            database.exec_blocks(self.script)
+
+
+def create_table(file_name: str=None, script: str=None):
+    """
+    Create table with sql file before SQLA class
+    :param file_name: sql file
+    :param script: sql script string
+    :return:
+    """
+    def _decorator(cls):
+        if cls.__name__ not in table_create_scripts:
+            config = ModelConfig(cls, file_name, script)
+            table_create_scripts[cls.__name__] = config
+        elif not table_create_scripts[cls.__name__].file:
+            table_create_scripts[cls.__name__].file = file_name
+            table_create_scripts[cls.__name__].script = script
+        return cls
+    return _decorator
 
 
 def alchemy_encoder(revisit_self=False, fields_to_expand=()):
@@ -72,4 +78,10 @@ def alchemy_encoder(revisit_self=False, fields_to_expand=()):
 
 
 def to_json(obj, fields_to_expand=()):
+    """
+    Convert a SQLA object to json string
+    :param obj:
+    :param fields_to_expand:
+    :return:
+    """
     return json.dumps(obj, cls=alchemy_encoder(False, fields_to_expand), check_circular=False)

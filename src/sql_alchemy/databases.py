@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
+from sqlalchemy import event
 
 import database
-from sql_alchemy import db
-
-
-def create_table(file_name: str):
-    def _decorator(cls):
-        database.exec_sql_file(file_name)
-        return cls
-    return _decorator
+from sql_alchemy import db, create_table
 
 
 @create_table('activity_create_table.sql')
@@ -59,3 +53,15 @@ class AkoSettings(db.Model):
     name = db.Column('name', db.String(255), nullable=False)
     value = db.Column('value', db.Text)
     comment = db.Column('comment', db.Text)
+
+
+@create_table('image_create_table.sql')
+class AkoImage(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column('name', db.String(255), nullable=False)
+    path = db.Column('path', db.String(255))
+    url = db.Column('url', db.String(255))
+    created_at = db.Column('created_at', db.TIMESTAMP)
+
+    def __str__(self):
+        return '%s: path:%s'

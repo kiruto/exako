@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS ako_image
+(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    path VARCHAR(255) NOT NULL,
+    url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT current_timestamp
+)
