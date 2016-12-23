@@ -4,7 +4,7 @@ import os.path as op
 
 from sqlalchemy import event
 
-from environment import get_image_upload_path
+from environment import get_image_upload_path, STATIC_DIST_GIT_IMAGE_PATH
 from sql_alchemy.databases import AkoImage
 
 
@@ -16,10 +16,9 @@ def init_listeners():
 
     @event.listens_for(AkoImage, 'after_delete')
     def _delete_image(mapper, connection, target):
-        print(mapper)
         if target.path:
             try:
-                os.remove(op.join(get_image_upload_path(), target.path))
+                os.remove(op.join(STATIC_DIST_GIT_IMAGE_PATH, target.path, target.name))
             except OSError:
                 # Don't care if was not deleted because it does not exist
                 pass

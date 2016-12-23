@@ -14,12 +14,14 @@ from application import app
 from environment import get_dir
 
 import routing
+from repo import web_dist
 from runtime_context import init_runtime_context
 from sql_alchemy import event_listeners
 
 
 def start_service():
     # app.run(host="0.0.0.0", port=80)
+    web_dist.check_git_repo()
     sql_alchemy.db.init_app(app)
     event_listeners.init_listeners()
     with app.app_context():

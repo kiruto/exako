@@ -3,10 +3,13 @@ import os.path as op
 
 import time
 from flask_admin import form
+from flask_admin.actions import action
 from flask_admin.contrib import sqla
+from markupsafe import Markup
 from werkzeug.utils import secure_filename
 
-from environment import get_image_upload_path
+from environment import get_image_upload_path, get_abs_image_upload_path, get_raw_image_url
+from repo import web_dist
 from sql_alchemy.databases import AkoMetaValue
 
 
@@ -38,10 +41,12 @@ def prefix_name(obj, file_data):
 
 class ImageFileDatabase(sqla.ModelView):
 
+    form_excluded_columns = ['created_at', 'url']
     form_extra_fields = ''
     form_overrides = {
         'path': form.fields.fields.HiddenField,
-        'name': form.FileUploadField
+        'name': form.FileUploadField,
+        'url': form.fields.fields.HiddenField,
     }
 
     form_args = {
@@ -50,8 +55,20 @@ class ImageFileDatabase(sqla.ModelView):
         },
         'name': {
             'label': 'File',
-            'base_path': get_image_upload_path(),
+            'base_path': get_abs_image_upload_path(),
             'allow_overwrite': False,
             'namegen': prefix_name
         }
     }
+
+    def _list_thumbnail(self, context, model, name):
+        return Markup('<img src="%s" style="max-width:100px;max-height:100px;width:auto;height:auto">' %
+                      get_raw_image_url(model))
+
+    column_formatters = {
+        'path': _list_thumbnail
+    }
+
+    @action('sync git', 'push origin to remote')
+    def sync_git(self, *args, **kwargs):
+        web_dist.push()
