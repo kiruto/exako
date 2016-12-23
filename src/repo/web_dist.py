@@ -22,11 +22,11 @@ def check_git_repo():
 
 def push():
     remote = _repo.remote('origin')
-    _repo.git.checkout('-f')
-    remote.pull()
+    # _repo.git.checkout('-f')
     _repo.git.add('.')
     try:
         _repo.git.commit('-m "committed by system"')
     except exc.GitCommandError as e:
         print(e)
+    remote.pull()
     remote.push()

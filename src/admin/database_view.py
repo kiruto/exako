@@ -33,33 +33,12 @@ class LangDatabase(sqla.ModelView):
     edit_modal = True
 
 
-def prefix_name(obj, file_data):
-    p0, p1 = op.splitext(file_data.filename)
-    p2 = time.strftime('%Y_%m_%d-%H_%M_%S', time.localtime(time.time()))
-    return secure_filename('%s-%s%s' % (p2, p0, p1))
-
-
 class ImageFileDatabase(sqla.ModelView):
 
-    form_excluded_columns = ['created_at', 'url']
-    form_extra_fields = ''
-    form_overrides = {
-        'path': form.fields.fields.HiddenField,
-        'name': form.FileUploadField,
-        'url': form.fields.fields.HiddenField,
-    }
-
-    form_args = {
-        'path': {
-            'default': get_image_upload_path()
-        },
-        'name': {
-            'label': 'File',
-            'base_path': get_abs_image_upload_path(),
-            'allow_overwrite': False,
-            'namegen': prefix_name
-        }
-    }
+    def _prefix_name(self, obj, file_data):
+        p0, p1 = op.splitext(file_data.filename)
+        p2 = time.strftime('%Y_%m_%d-%H_%M_%S', time.localtime(time.time()))
+        return secure_filename('%s-%s%s' % (p2, p0, p1))
 
     def _list_thumbnail(self, context, model, name):
         return Markup('<img src="%s" style="max-width:100px;max-height:100px;width:auto;height:auto">' %
@@ -68,6 +47,28 @@ class ImageFileDatabase(sqla.ModelView):
     column_formatters = {
         'path': _list_thumbnail
     }
+
+    form_excluded_columns = ['created_at', 'url']
+    form_extra_fields = ''
+    form_overrides = {
+        'path': form.fields.fields.HiddenField,
+        'name': form.FileUploadField,
+        'url': form.fields.fields.HiddenField,
+    }
+    form_args = {
+        'path': {
+            'default': get_image_upload_path()
+        },
+        'name': {
+            'label': 'File',
+            'base_path': get_abs_image_upload_path(),
+            'allow_overwrite': False,
+            'namegen': _prefix_name
+        }
+    }
+
+    create_modal = True
+    edit_modal = True
 
     @action('sync git', 'push origin to remote')
     def sync_git(self, *args, **kwargs):
