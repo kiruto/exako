@@ -80,7 +80,8 @@ class AkoTag(db.Model):
 class AkoTagValue(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     tag_id = db.Column('tag', db.Integer, db.ForeignKey(AkoTag.id), nullable=False)
-    lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id), nullable=False)
+    lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id))
+    name = db.Column('name', db.String(255))
 
 
 # M2M table
@@ -96,8 +97,6 @@ article_image_table = db.Table('ako_m2m_article_image', db.Model.metadata,
                                db.Column('image', db.Integer, db.ForeignKey('ako_image.id')))
 
 
-@create_table('m2m_article_tag_create_table.sql')
-@create_table('m2m_article_image_create_table.sql')
 @create_table('article_create_table.sql')
 class AkoArticle(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
@@ -116,3 +115,6 @@ class AkoArticleContent(db.Model):
     title = db.Column('title', db.Text)
     description = db.Column('description', db.Text)
     content = db.Column('content', db.Text)
+
+    def __str__(self):
+        return self.title

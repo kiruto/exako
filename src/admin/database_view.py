@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 from environment import get_image_upload_path, get_abs_image_upload_path, get_raw_image_url
 from repo import web_dist
-from sql_alchemy.databases import AkoMetaValue
+from sql_alchemy.databases import AkoMetaValue, AkoArticleContent, AkoTag, AkoTagValue, AkoImage
 
 
 class CommonDatabase(sqla.ModelView):
@@ -73,3 +73,12 @@ class ImageFileDatabase(sqla.ModelView):
     @action('sync git', 'push origin to remote')
     def sync_git(self, *args, **kwargs):
         web_dist.push()
+
+
+class ArticleDatabase(sqla.ModelView):
+    inline_models = (AkoArticleContent, )
+    form_excluded_columns = ['created_at', ]
+
+
+class TagDatabase(sqla.ModelView):
+    inline_models = (AkoTagValue, )
