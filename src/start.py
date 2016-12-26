@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 
+import connexion
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.wsgi import WSGIContainer
@@ -10,6 +11,7 @@ from tornado.wsgi import WSGIContainer
 import admin
 import config
 import sql_alchemy
+import swagger
 from application import app
 from environment import get_dir
 
@@ -27,6 +29,7 @@ def start_service():
     with app.app_context():
         init_runtime_context()
     admin.init_console(app, sql_alchemy.db)
+    swagger.init_connexion(app)
     routing.init_app(app)
 
     http_server = HTTPServer(WSGIContainer(app))

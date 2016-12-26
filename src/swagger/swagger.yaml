@@ -1,0 +1,137 @@
+# Editor: http://editor.swagger.io
+
+swagger: "2.0"
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: "1.0"
+  title: Exako Api
+host: api.exyui.com
+basePath: /1.0
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+################################################################################
+#                                           Paths                              #
+################################################################################
+paths:
+  /article/{lang}:
+    get:
+      description: Returns a list of article meta.
+      operationId: "swagger.controllers.article_meta_list_get"
+      parameters:
+        - name: lang
+          in: path
+          description: Language
+          required: true
+          type: string
+        - name: tag
+          in: query
+          description: The tag of article
+          required: false
+          type: string
+        - name: cat
+          in: query
+          description: The category of article
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: The current page number, starts from 0
+          required: false
+          type: integer
+          format: int32
+        - name: lim
+          in: query
+          description: Items number per page
+          required: false
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Article_Meta'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /article/{lang}/{id}:
+    get:
+      description: Returns an article of id.
+      operationId: "swagger.controllers.article_get"
+      parameters:
+        - name: lang
+          in: path
+          description: Language
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Article id
+          required: true
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/Article'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+  Article_Meta:
+    type: object
+    properties:
+      id:
+        type: integer
+      category:
+        type: string
+      tag:
+        type: array
+        items:
+          type: string
+      img_url:
+        type: string
+      img_type:
+        type: integer
+      url_title:
+        type: string
+      description:
+        type: string
+
+  Article:
+    type: object
+    properties:
+      info:
+        $ref: '#/definitions/Article_Meta'
+      content:
+        type: string
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
