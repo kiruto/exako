@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from sqlalchemy import event
-
-import database
 from sql_alchemy import db, create_table
 
 
@@ -22,7 +19,9 @@ class AkoActivity(db.Model):
 class AkoLang(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     name = db.Column('name', db.String(20), unique=True, nullable=False)
-    meta_list = db.relationship('AkoMetaValue', backref='lang')
+    meta_list = db.relationship('AkoMetaValue', backref='lang', lazy='dynamic')
+    tag_list = db.relationship('AkoTagValue', backref='lang', lazy='dynamic')
+    article_content_list = db.relationship('AkoArticleContent', backref='lang', lazy='dynamic')
 
     def __str__(self):
         return self.name
@@ -65,3 +64,55 @@ class AkoImage(db.Model):
 
     def __str__(self):
         return '%s: path:%s'
+
+
+@create_table('tag_create_table.sql')
+class AkoTag(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    extra = db.Column('extra', db.Text)
+    tag_content = db.relationship('AkoTagValue', backref='tag')
+
+    def __str__(self):
+        return self.extra
+
+
+@create_table('tag_value_create_table.sql')
+class AkoTagValue(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    tag_id = db.Column('tag', db.Integer, db.ForeignKey(AkoTag.id), nullable=False)
+    lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id), nullable=False)
+
+
+# M2M table
+article_tag_table = db.Table('ako_m2m_article_tag', db.Model.metadata,
+                             db.Column('id', db.Integer, primary_key=True, autoincrement=True),
+                             db.Column('article', db.Integer, db.ForeignKey('ako_article.id')),
+                             db.Column('tag', db.Integer, db.ForeignKey('ako_tag.id')))
+
+
+article_image_table = db.Table('ako_m2m_article_image', db.Model.metadata,
+                               db.Column('id', db.Integer, primary_key=True, autoincrement=True),
+                               db.Column('article', db.Integer, db.ForeignKey('ako_article.id')),
+                               db.Column('image', db.Integer, db.ForeignKey('ako_image.id')))
+
+
+@create_table('m2m_article_tag_create_table.sql')
+@create_table('m2m_article_image_create_table.sql')
+@create_table('article_create_table.sql')
+class AkoArticle(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    tags = db.relationship('AkoTag', secondary=article_tag_table)
+    cat_id = db.Column('cat', db.Integer, db.ForeignKey(AkoTag.id))
+    images = db.relationship('AkoImage', secondary=article_image_table)
+    content = db.relationship('AkoArticleContent', backref='article')
+    created_at = db.Column('created_at', db.TIMESTAMP)
+
+
+@create_table('article_content_create_table.sql')
+class AkoArticleContent(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    article_id = db.Column('article', db.Integer, db.ForeignKey(AkoArticle.id), nullable=False)
+    lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id), nullable=False)
+    title = db.Column('title', db.Text)
+    description = db.Column('description', db.Text)
+    content = db.Column('content', db.Text)

@@ -1,7 +1,5 @@
-CREATE TABLE IF NOT EXISTS ako_tag
+CREATE TABLE IF NOT EXISTS exako.ako_tag
 (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     extra TEXT
 );
-CREATE UNIQUE INDEX ako_tag_name_uindex ON ako_tag (name);
