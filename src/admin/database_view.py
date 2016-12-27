@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 from environment import get_image_upload_path, get_abs_image_upload_path, get_raw_image_url
 from repo import web_dist
-from sql_alchemy.databases import AkoMetaValue, AkoArticleContent, AkoTag, AkoTagValue, AkoImage
+from sql_alchemy.databases import AkoMetaValue, AkoArticleContent, AkoTag, AkoTagValue, AkoImage, AkoArticleExtra
 
 
 class CommonDatabase(sqla.ModelView):
@@ -76,7 +76,7 @@ class ImageFileDatabase(sqla.ModelView):
 
 
 class ArticleDatabase(sqla.ModelView):
-    inline_models = (AkoArticleContent, )
+    inline_models = (AkoArticleContent, AkoArticleExtra)
     form_excluded_columns = ['created_at', ]
 
     def _list_article_name(self, context, model, name):
@@ -87,7 +87,7 @@ class ArticleDatabase(sqla.ModelView):
 
     def _list_article_copies(self, context, model, name):
         if model.content:
-            return ','.join(x.lang for x in model.content)
+            return ','.join(x.lang.__str__() for x in model.content)
         else:
             return 'none'
 

@@ -19,9 +19,9 @@ class AkoActivity(db.Model):
 class AkoLang(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     name = db.Column('name', db.String(20), unique=True, nullable=False)
-    meta_list = db.relationship('AkoMetaValue', backref='lang', lazy='dynamic')
-    tag_list = db.relationship('AkoTagValue', backref='lang', lazy='dynamic')
-    article_content_list = db.relationship('AkoArticleContent', backref='lang', lazy='dynamic')
+    meta_list = db.relationship('AkoMetaValue', backref=db.backref('lang', lazy='joined'), lazy='dynamic')
+    tag_list = db.relationship('AkoTagValue', backref=db.backref('lang', lazy='joined'), lazy='dynamic')
+    article_content_list = db.relationship('AkoArticleContent', backref=db.backref('lang', lazy='joined'), lazy='dynamic')
 
     def __str__(self):
         return self.name
@@ -32,7 +32,7 @@ class AkoSiteMeta(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     name = db.Column('name', db.String(60), nullable=False)
     comment = db.Column('comment', db.Text)
-    value = db.relationship('AkoMetaValue', backref='meta_info')
+    value = db.relationship('AkoMetaValue', backref=db.backref('meta_info', lazy='joined'), lazy='dynamic')
 
     def __str__(self):
         return '%s: %s' % (self.name, self.comment)
@@ -70,8 +70,8 @@ class AkoImage(db.Model):
 class AkoTag(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     extra = db.Column('extra', db.Text)
-    tag_content = db.relationship('AkoTagValue', backref='tag')
-    article_cat_list = db.relationship('AkoArticle', backref='cat', lazy='dynamic')
+    tag_content = db.relationship('AkoTagValue', backref=db.backref('tag', lazy='joined'), lazy='joined')
+    article_cat_list = db.relationship('AkoArticle', backref=db.backref('cat', lazy='joined'), lazy='joined')
 
     def __str__(self):
         if self.tag_content:
@@ -110,7 +110,8 @@ class AkoArticle(db.Model):
     tags = db.relationship('AkoTag', secondary=article_tag_table)
     cat_id = db.Column('cat', db.Integer, db.ForeignKey(AkoTag.id))
     images = db.relationship('AkoImage', secondary=article_image_table)
-    content = db.relationship('AkoArticleContent', backref='article')
+    content = db.relationship('AkoArticleContent', backref='article', lazy='joined')
+    extra = db.relationship('AkoArticleExtra', backref='article', lazy='joined')
     created_at = db.Column('created_at', db.TIMESTAMP)
 
 
@@ -125,3 +126,24 @@ class AkoArticleContent(db.Model):
 
     def __str__(self):
         return self.title
+
+
+@create_table('article_extra_meta_create_table.sql')
+class AkoArticleExtraMeta(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column('name', db.String(255), nullable=False)
+    extras = db.relationship('AkoArticleExtra', backref='prop', lazy='joined')
+
+    def __str__(self):
+        return self.name
+
+
+@create_table('article_extra_create_table.sql')
+class AkoArticleExtra(db.Model):
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    article_id = db.Column('article', db.Integer, db.ForeignKey(AkoArticle.id), nullable=False)
+    prop_id = db.Column('prop', db.Integer, db.ForeignKey(AkoArticleExtraMeta.id), nullable=False)
+    val = db.Column('val', db.Text)
+
+    def __str__(self):
+        return '%s: %s' % self.prop, self.val

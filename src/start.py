@@ -3,7 +3,6 @@ import os
 import subprocess
 import sys
 
-import connexion
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.wsgi import WSGIContainer
@@ -21,8 +20,7 @@ from runtime_context import init_runtime_context
 from sql_alchemy import event_listeners
 
 
-def start_service():
-    # app.run(host="0.0.0.0", port=80)
+def init():
     web_dist.check_git_repo()
     sql_alchemy.db.init_app(app)
     event_listeners.init_listeners()
@@ -31,10 +29,15 @@ def start_service():
     admin.init_console(app, sql_alchemy.db)
     swagger.init_connexion(app)
     routing.init_app(app)
+    return app
 
+
+def start_service(debug=False):
+    # app.run(host="0.0.0.0", port=80)
+    init()
     http_server = HTTPServer(WSGIContainer(app))
     http_server.bind(config.HTTP_PORT)
-    http_server.start(0)
+    http_server.start(0 if not debug else None)
     IOLoop.instance().start()
 
 
@@ -53,3 +56,5 @@ if __name__ == "__main__":
         start_service()
     elif sys.argv[1] == 'proto':
         update_proto_files()
+    elif sys.argv[1] == 'debug':
+        start_service(True)
