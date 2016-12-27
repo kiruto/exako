@@ -7,11 +7,11 @@ from sql_alchemy.databases import AkoSiteMeta, AkoLang, AkoSettings, AkoImage, A
 
 
 class Cats:
-    databases = 'Databases'
+    databases = 'Database'
 
 
 def init_console(app, db):
-    console = admin.Admin(app, name='Console', template_mode='bootstrap3')
+    console = admin.Admin(app, name='Exako Console', template_mode='bootstrap3')
     console.add_view(
         MetaDatabase(AkoSiteMeta, db.session, category=Cats.databases)
     )

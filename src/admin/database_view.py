@@ -28,9 +28,9 @@ class MetaDatabase(sqla.ModelView):
 
 
 class LangDatabase(sqla.ModelView):
-    inline_models = (AkoMetaValue, )
     create_modal = True
     edit_modal = True
+    form_excluded_columns = ['meta_list', 'tag_list', 'article_content_list']
 
 
 class ImageFileDatabase(sqla.ModelView):
@@ -79,6 +79,40 @@ class ArticleDatabase(sqla.ModelView):
     inline_models = (AkoArticleContent, )
     form_excluded_columns = ['created_at', ]
 
+    def _list_article_name(self, context, model, name):
+        if model.content:
+            return model.content[0].title
+        else:
+            return 'empty'
+
+    def _list_article_copies(self, context, model, name):
+        if model.content:
+            return ','.join(x.lang for x in model.content)
+        else:
+            return 'none'
+
+    column_formatters = {
+        'title': _list_article_name,
+        'copies': _list_article_copies
+    }
+
+    def get_column_names(self, only_columns, excluded_columns):
+        only_columns += ['title', 'copies']
+        return super().get_column_names(only_columns, excluded_columns)
+
 
 class TagDatabase(sqla.ModelView):
     inline_models = (AkoTagValue, )
+    form_excluded_columns = ['article_cat_list']
+
+    def _list_tag_sample(self, context, model, name):
+        return model.extra if model.extra else model.__str__()
+
+    column_formatters = {
+        'sample': _list_tag_sample
+    }
+    column_editable_list = ['extra']
+
+    def get_column_names(self, only_columns, excluded_columns):
+        only_columns += ['sample']
+        return super().get_column_names(only_columns, excluded_columns)

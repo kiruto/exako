@@ -71,9 +71,13 @@ class AkoTag(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     extra = db.Column('extra', db.Text)
     tag_content = db.relationship('AkoTagValue', backref='tag')
+    article_cat_list = db.relationship('AkoArticle', backref='cat', lazy='dynamic')
 
     def __str__(self):
-        return self.extra
+        if self.tag_content:
+            return ','.join(tag.__str__() for tag in self.tag_content)
+        else:
+            return self.extra
 
 
 @create_table('tag_value_create_table.sql')
@@ -82,6 +86,9 @@ class AkoTagValue(db.Model):
     tag_id = db.Column('tag', db.Integer, db.ForeignKey(AkoTag.id), nullable=False)
     lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id))
     name = db.Column('name', db.String(255))
+
+    def __str__(self):
+        return self.name
 
 
 # M2M table

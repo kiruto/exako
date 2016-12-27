@@ -1,4 +1,4 @@
-/route_depth_0_0/route_depth_1_1	routing.depth_1_1
 /route_depth_0_0/route_depth_1_0	routing.depth_1_0
-/rest/meta	routing.site_meta
+/route_depth_0_0/route_depth_1_1	routing.depth_1_1
 /route_depth_0_1/route_depth_1_0/route_depth_2_0/<path:path>	routing.depth_2_0
+/rest/meta	routing.site_meta
