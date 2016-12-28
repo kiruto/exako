@@ -33,12 +33,14 @@ def init():
 
 
 def start_service(debug=False):
-    # app.run(host="0.0.0.0", port=80)
     init()
-    http_server = HTTPServer(WSGIContainer(app))
-    http_server.bind(config.HTTP_PORT)
-    http_server.start(0 if not debug else None)
-    IOLoop.instance().start()
+    if debug:
+        app.run(host="0.0.0.0", port=config.HTTP_PORT)
+    else:
+        http_server = HTTPServer(WSGIContainer(app))
+        http_server.bind(config.HTTP_PORT)
+        http_server.start(0)
+        IOLoop.instance().start()
 
 
 def update_proto_files():

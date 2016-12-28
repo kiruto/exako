@@ -4,6 +4,7 @@ from sql_alchemy import db, create_table
 
 @create_table('activity_create_table.sql')
 class AkoActivity(db.Model):
+    __tablename__ = 'ako_activaty'
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     platform = db.Column('platform', db.String)
     source_url = db.Column('source_url', db.Text)
@@ -146,4 +147,4 @@ class AkoArticleExtra(db.Model):
     val = db.Column('val', db.Text)
 
     def __str__(self):
-        return '%s: %s' % self.prop, self.val
+        return self.val

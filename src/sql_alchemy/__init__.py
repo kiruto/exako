@@ -85,3 +85,9 @@ def to_json(obj, fields_to_expand=()):
     :return:
     """
     return json.dumps(obj, cls=alchemy_encoder(False, fields_to_expand), check_circular=False)
+
+
+def filter_lang_id(model_list, lang_id):
+    for m in model_list:
+        if m.lang_id == lang_id:
+            return m

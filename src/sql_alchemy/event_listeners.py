@@ -4,8 +4,9 @@ import os.path as op
 
 from sqlalchemy import event
 
+import runtime_context
 from environment import get_image_upload_path, STATIC_DIST_GIT_IMAGE_PATH
-from sql_alchemy.databases import AkoImage
+from sql_alchemy.databases import AkoImage, AkoTag
 
 
 def init_listeners():
@@ -22,3 +23,7 @@ def init_listeners():
             except OSError:
                 # Don't care if was not deleted because it does not exist
                 pass
+
+    @event.listens_for(AkoTag, 'after_insert')
+    def _insert_tag(mapper, connection, target):
+        runtime_context.tags.append(target)

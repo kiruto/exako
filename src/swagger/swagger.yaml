@@ -112,7 +112,7 @@ definitions:
         type: string
       img_type:
         type: integer
-      url_title:
+      title:
         type: string
       description:
         type: string
