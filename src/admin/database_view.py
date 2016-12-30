@@ -35,7 +35,7 @@ class LangDatabase(sqla.ModelView):
 
 class ImageFileDatabase(sqla.ModelView):
 
-    def _prefix_name(self, obj, file_data):
+    def _prefix_name(self, file_data):
         p0, p1 = op.splitext(file_data.filename)
         p2 = time.strftime('%Y_%m_%d-%H_%M_%S', time.localtime(time.time()))
         return secure_filename('%s-%s%s' % (p2, p0, p1))
