@@ -73,22 +73,29 @@ def _fill_article_info(article, language):
 
 @rsp_check.lang
 def article_meta_list_get(lang, tag=None, cat=None, page=0, lim=20):
+    """
+    List articles
+    :param lang: language
+    :param tag: tag name
+    :param cat: category name
+    :param page: page number starts by 0
+    :param lim: items per page
+    :return: List of following struct
+    {
+        "id": 0,
+        "category": "string",
+        "tag": [
+            "string"
+        ],
+        "img_url": "string",
+        "img_type": 0,
+        "title": "string",
+        "description": "string"
+    }
+    """
     if page < 0 or lim < 0 or lim > 50:
         return error(40001, 'page or lim is not valid'), 400
     language = runtime_context.lang(lang)
-
-    def get_struct():
-        return {
-            "id": 0,
-            "category": "string",
-            "tag": [
-                "string"
-            ],
-            "img_url": "string",
-            "img_type": 0,
-            "title": "string",
-            "description": "string"
-        }
     result = list()
     query = db.session.query(AkoArticle)
 
@@ -111,24 +118,28 @@ def article_meta_list_get(lang, tag=None, cat=None, page=0, lim=20):
 
 @rsp_check.lang
 def article_get(lang, aid):
+    """
+    Get single article by id
+    :param lang: language
+    :param aid: Article record id
+    :return:
+    {
+        "info": {
+            "id": 0,
+            "category": "",
+            "tag": [],
+            "img_url": "",
+            "img_type": 0,
+            "title": "",
+            "description": ""
+        },
+        "content": ""
+    }
+    """
     language = runtime_context.lang(lang)
-
-    def get_struct():
-        return {
-            "info": {
-                "id": 0,
-                "category": "",
-                "tag": [],
-                "img_url": "",
-                "img_type": 0,
-                "title": "",
-                "description": ""
-            },
-            "content": ""
-        }
     item = db.session.query(AkoArticle).filter(AkoArticle.id == aid).one_or_none()
     if item:
-        result = get_struct()
+        result = dict()
         result['info'] = _fill_article_info(item, language)
         content = sql_alchemy.filter_lang_id(item.content, language.id).content
         result['content'] = _parse_article_img(item.images, content)

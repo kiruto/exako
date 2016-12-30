@@ -7,7 +7,7 @@ from connexion.resolver import Resolver
 from connexion.api import Api
 
 import config
-
+__version__ = '1.0'
 swagger_file = 'swagger.yaml'
 
 

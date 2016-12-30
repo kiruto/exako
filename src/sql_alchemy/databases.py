@@ -136,7 +136,7 @@ class AkoArticleContent(db.Model):
 @create_table('article_extra_meta_create_table.sql')
 class AkoArticleExtraMeta(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column('name', db.String(255), nullable=False)
+    name = db.Column('name', db.String(255), nullable=False, unique=True)
     extras = db.relationship('AkoArticleExtra', backref='prop', lazy='joined')
 
     def __str__(self):
