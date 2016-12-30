@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import environment
 from sql_alchemy import db, create_table
 
 
@@ -65,6 +66,9 @@ class AkoImage(db.Model):
 
     def __str__(self):
         return '%s: path:%s'
+
+    def get_url(self):
+        return environment.get_raw_image_url(self)
 
 
 @create_table('tag_create_table.sql')

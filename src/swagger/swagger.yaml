@@ -22,10 +22,35 @@ produces:
 #                                           Paths                              #
 ################################################################################
 paths:
-  /article/{lang}:
+  /{lang}/article/{aid}:
+    get:
+      description: Returns an article of id.
+      operationId: "swagger.article_controllers.article_get"
+      parameters:
+        - name: lang
+          in: path
+          description: Language
+          required: true
+          type: string
+        - name: aid
+          in: path
+          description: Article id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/Article'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /{lang}/article:
     get:
       description: Returns a list of article meta.
-      operationId: "swagger.controllers.article_meta_list_get"
+      operationId: "swagger.article_controllers.article_meta_list_get"
       parameters:
         - name: lang
           in: path
@@ -61,32 +86,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Article_Meta'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
-  /article/{lang}/{id}:
-    get:
-      description: Returns an article of id.
-      operationId: "swagger.controllers.article_get"
-      parameters:
-        - name: lang
-          in: path
-          description: Language
-          required: true
-          type: string
-        - name: id
-          in: path
-          description: Article id
-          required: true
-          type: number
-          format: int32
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: '#/definitions/Article'
         default:
           description: Unexpected error
           schema:
@@ -131,7 +130,7 @@ definitions:
       code:
         type: integer
         format: int32
-      message:
+      msg:
         type: string
-      fields:
+      err:
         type: string

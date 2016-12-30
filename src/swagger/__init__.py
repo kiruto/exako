@@ -6,6 +6,8 @@ from connexion.resolver import Resolver
 
 from connexion.api import Api
 
+import config
+
 swagger_file = 'swagger.yaml'
 
 
@@ -22,13 +24,13 @@ def init_connexion(app):
 
     logger.debug('Specification directory: %s', specification_dir)
 
-    def resolver_error_handler(self, *args, **kwargs):
-        from connexion.handlers import ResolverErrorHandler
+    def resolver_error_handler(*args, **kwargs):
         kwargs['operation'] = {
             'operationId': 'connexion.handlers.ResolverErrorHandler',
         }
         kwargs.setdefault('app_consumes', ['application/json'])
-        return ResolverErrorHandler(self.resolver_error, *args, **kwargs)
+        from swagger.error_handler import ErrorHandler
+        return ErrorHandler(400, *args, **kwargs)
 
     resolver = Resolver()
     resolver = Resolver(resolver) if hasattr(resolver, '__call__') else resolver
@@ -50,7 +52,7 @@ def init_connexion(app):
               swagger_url=swagger_url,
               resolver=resolver,
               resolver_error_handler=resolver_error_handler,
-              validate_responses=False,
+              validate_responses=config.DEBUG,
               strict_validation=False,
               auth_all_paths=auth_all_paths,
               debug=False)

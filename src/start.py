@@ -59,4 +59,5 @@ if __name__ == "__main__":
     elif sys.argv[1] == 'proto':
         update_proto_files()
     elif sys.argv[1] == 'debug':
+        config.DEBUG = True
         start_service(True)
