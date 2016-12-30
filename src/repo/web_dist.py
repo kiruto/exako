@@ -21,12 +21,17 @@ def check_git_repo():
 
 
 def push():
-    remote = _repo.remote('origin')
-    # _repo.git.checkout('-f')
-    _repo.git.add('.')
     try:
-        _repo.git.commit('-m "committed by system"')
-    except exc.GitCommandError as e:
-        print(e)
-    remote.pull()
-    remote.push()
+        import local_properties
+        remote_url = STATIC_GIT_REPO.replace('https://', 'https://%s:%s@' % local_properties.GITHUB_USERNAME, local_properties.GITHUB_TOKEN)
+        remote = _repo.remote(remote_url)
+        # _repo.git.checkout('-f')
+        _repo.git.add('.')
+        try:
+            _repo.git.commit('-m "committed by system"')
+        except exc.GitCommandError as e:
+            print(e)
+        remote.pull()
+        remote.push()
+    except:
+        return
