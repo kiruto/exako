@@ -24,7 +24,7 @@ def _parse_article_img(article_images, article_content):
     result_array = img_re.findall(article_content)
     image_map = dict()
     for img in article_images:
-        image_map[img.id] = img
+        image_map[str(img.id)] = img
     for tup in result_array:
         # [('<ako-img[123]', '123'), ('<ako-img[1234]', '1234'), ('<ako-img[1235]', '1235'), ('<ako-img[1236]', '1236')]
         tag = tup[0]
