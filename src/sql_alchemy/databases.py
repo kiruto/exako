@@ -65,7 +65,7 @@ class AkoImage(db.Model):
     created_at = db.Column('created_at', db.TIMESTAMP)
 
     def __str__(self):
-        return '%s: path:%s'
+        return '%s: name:%s' % (self.id, self.name)
 
     def get_url(self):
         return environment.get_raw_image_url(self)
