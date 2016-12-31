@@ -89,5 +89,5 @@ def to_json(obj, fields_to_expand=()):
 
 def filter_lang_id(model_list, lang_id):
     for m in model_list:
-        if m.lang_id == lang_id:
+        if not m.lang_id or m.lang_id == lang_id:
             return m
