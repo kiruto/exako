@@ -115,6 +115,8 @@ definitions:
         type: string
       description:
         type: string
+      google_translation:
+        type: bool
 
   Article:
     type: object

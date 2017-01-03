@@ -18,12 +18,18 @@ def get_or_create(session, model, **kwargs):
         return instance
 
 
+def _create_article_meta(*meta):
+    for m in meta:
+        get_or_create(db.session, AkoArticleExtraMeta, name=m)
+
+
 def init_runtime_context():
     global langs, tags
     langs = AkoLang.query.all()
     tags = AkoTag.query.all()
-    get_or_create(db.session, AkoArticleExtraMeta, name='cover_img')
-    get_or_create(db.session, AkoArticleExtraMeta, name='cover_type')
+    _create_article_meta(
+        'cover_img', 'cover_type',
+        'google_translate_en', 'google_translate_zh', 'google_translate_ja')
 
 
 def lang(name):
