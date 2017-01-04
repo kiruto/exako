@@ -7,7 +7,7 @@ import runtime_context
 import sql_alchemy
 from sql_alchemy import db
 from sql_alchemy import rsp_check
-from sql_alchemy.databases import AkoArticle, AkoTag, AkoTagValue, AkoArticleContent
+from sql_alchemy.databases import AkoArticle, AkoTag, AkoTagValue, AkoArticleContent, AkoLang
 from swagger.rsp import error
 img_re = re.compile('(<ako-img\[([0-9]*)\])', re.IGNORECASE)
 
@@ -40,7 +40,7 @@ def _find_image_in_article(article, img_id):
             return img
 
 
-def _fill_article_info(article, language):
+def _fill_article_info(article: AkoArticle, language: AkoLang):
     struct = {
         "id": 0,
         "category": "string",
@@ -51,7 +51,8 @@ def _fill_article_info(article, language):
         "img_type": 0,
         "title": "string",
         "description": "string",
-        "google_translation": False
+        "google_translation": False,
+        "created_at": ""
     }
     s = struct
     s['id'] = article.id
@@ -71,6 +72,7 @@ def _fill_article_info(article, language):
     c = sql_alchemy.filter_lang_id(article.content, language.id)
     s['description'] = c.description
     s['title'] = c.title
+    s['created_at'] = str(article.created_at)
     return s
 
 
@@ -93,7 +95,9 @@ def article_meta_list_get(lang, tag=None, cat=None, page=0, lim=20):
         "img_url": "string",
         "img_type": 0,
         "title": "string",
-        "description": "string"
+        "description": "string",
+        "google_translation": bool,
+        "created_at": "string"
     }
     """
     if page < 0 or lim < 0 or lim > 50:
