@@ -8,6 +8,7 @@ import sql_alchemy
 from sql_alchemy import db
 from sql_alchemy import rsp_check
 from sql_alchemy.databases import AkoArticle, AkoTag, AkoTagValue, AkoArticleContent, AkoLang
+from swagger.encrype import aes_dict
 from swagger.rsp import error
 img_re = re.compile('(<ako-img\[([0-9]*)\])', re.IGNORECASE)
 
@@ -76,6 +77,7 @@ def _fill_article_info(article: AkoArticle, language: AkoLang):
     return s
 
 
+@aes_dict
 @rsp_check.lang
 def article_meta_list_get(lang, tag=None, cat=None, page=0, lim=20):
     """
@@ -123,6 +125,7 @@ def article_meta_list_get(lang, tag=None, cat=None, page=0, lim=20):
     return result
 
 
+@aes_dict
 @rsp_check.lang
 def article_get(lang, aid):
     """

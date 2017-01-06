@@ -11,13 +11,16 @@ import admin
 import config
 import sql_alchemy
 import swagger
-from application import app
+from application import application
 from environment import get_dir
 
 import routing
 from repo import web_dist
 from runtime_context import init_runtime_context
 from sql_alchemy import event_listeners
+
+
+app = application()
 
 
 def init():

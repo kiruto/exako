@@ -2,6 +2,7 @@
 HTTP_PORT = 8249
 
 DEBUG = False
+ENCRYPT = True
 
 MARIA_SERVER = '127.0.0.1'
 MARIA_USER = 'exako'

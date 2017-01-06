@@ -52,7 +52,7 @@ def init_connexion(app):
               swagger_url=swagger_url,
               resolver=resolver,
               resolver_error_handler=resolver_error_handler,
-              validate_responses=config.DEBUG,
+              validate_responses=config.DEBUG and not config.ENCRYPT,
               strict_validation=False,
               auth_all_paths=auth_all_paths,
               debug=False)

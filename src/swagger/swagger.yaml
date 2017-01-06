@@ -14,9 +14,11 @@ schemes:
   - http
   - https
 consumes:
-  - application/json
+#  - application/json
+  - application/octet-stream
 produces:
-  - application/json
+#  - application/json
+  - application/octet-stream
 
 ################################################################################
 #                                           Paths                              #
