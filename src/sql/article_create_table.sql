@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS ako_article
     cat INT,
     created_at TIMESTAMP DEFAULT current_timestamp,
     CONSTRAINT ako_article_ako_tag_fk FOREIGN KEY (cat) REFERENCES ako_tag (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE IF NOT EXISTS exako.ako_m2m_article_image
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS exako.ako_m2m_article_image
     image INT NOT NULL,
     CONSTRAINT ako_article_ako_m2m_article_image_article_fk FOREIGN KEY (article) REFERENCES ako_article (id),
     CONSTRAINT ako_image_ako_m2m_article_image_image_fk FOREIGN KEY (image) REFERENCES ako_image (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS exako.ako_m2m_article_tag
 (
@@ -21,4 +21,4 @@ CREATE TABLE IF NOT EXISTS exako.ako_m2m_article_tag
     tag INT NOT NULL,
     CONSTRAINT ako_article_ako_m2m_article_tag_article_fk FOREIGN KEY (article) REFERENCES ako_article (id),
     CONSTRAINT ako_tag_ako_m2m_article_tag_tag_fk FOREIGN KEY (tag) REFERENCES ako_tag (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

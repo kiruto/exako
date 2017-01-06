@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS exako.ako_tag_value
     lang INT,
     CONSTRAINT ako_tag_ako_tag_value_tag_fk FOREIGN KEY (tag) REFERENCES ako_tag (id),
     CONSTRAINT ako_tag_ako_tag_value_lang_fk FOREIGN KEY (lang) REFERENCES ako_lang(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

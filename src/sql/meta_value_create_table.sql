@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS exako.ako_meta_value
     lang INT NOT NULL,
     CONSTRAINT ako_site_meta_ako_meta_id_fk FOREIGN KEY (key_name) REFERENCES ako_site_meta (id),
     CONSTRAINT ako_site_meta_ako_lang_id_fk FOREIGN KEY (lang) REFERENCES ako_lang (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE INDEX ako_meta_value_key_name_uindex on exako.ako_meta_value (key_name);
 CREATE INDEX ako_meta_value_lang_uindex on exako.ako_meta_value (lang);

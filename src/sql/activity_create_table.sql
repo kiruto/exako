@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS ako_activity
     thumbnail_url TEXT,
     tag VARCHAR(255) DEFAULT '[]',
     extra TEXT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE INDEX ako_activity_tag__index ON ako_activity (tag);
 CREATE INDEX ako_activity_time__index ON ako_activity (created_at);
