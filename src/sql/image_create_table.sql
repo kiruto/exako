@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS ako_image
     path VARCHAR(255) NOT NULL,
     url VARCHAR(255),
     created_at TIMESTAMP DEFAULT current_timestamp
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8md4;
