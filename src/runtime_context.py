@@ -29,7 +29,8 @@ def init_runtime_context():
     tags = AkoTag.query.all()
     _create_article_meta(
         'cover_img', 'cover_type',
-        'google_translate_en', 'google_translate_zh', 'google_translate_ja')
+        'google_translate_en', 'google_translate_zh', 'google_translate_ja',
+        'cover_name_en', 'cover_name_zh', 'cover_name_ja')
 
 
 def lang(name):

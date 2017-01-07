@@ -51,7 +51,7 @@ class AkoMetaValue(db.Model):
 @create_table('settings_create_table.sql')
 class AkoSettings(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column('name', db.String(255), nullable=False)
+    name = db.Column('name', db.String(191), nullable=False)
     value = db.Column('value', db.Text)
     comment = db.Column('comment', db.Text)
 
@@ -59,9 +59,9 @@ class AkoSettings(db.Model):
 @create_table('image_create_table.sql')
 class AkoImage(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column('name', db.String(255), nullable=False)
-    path = db.Column('path', db.String(255))
-    url = db.Column('url', db.String(255))
+    name = db.Column('name', db.String(191), nullable=False)
+    path = db.Column('path', db.String(191))
+    url = db.Column('url', db.String(191))
     created_at = db.Column('created_at', db.TIMESTAMP)
 
     def __str__(self):
@@ -90,7 +90,7 @@ class AkoTagValue(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     tag_id = db.Column('tag', db.Integer, db.ForeignKey(AkoTag.id), nullable=False)
     lang_id = db.Column('lang', db.Integer, db.ForeignKey(AkoLang.id))
-    name = db.Column('name', db.String(255))
+    name = db.Column('name', db.String(191))
 
     def __str__(self):
         return self.name
@@ -136,11 +136,12 @@ class AkoArticleContent(db.Model):
 @create_table('article_extra_meta_create_table.sql')
 class AkoArticleExtraMeta(db.Model):
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column('name', db.String(255), nullable=False, unique=True)
+    name = db.Column('name', db.String(191), nullable=False, unique=True)
+    description = db.Column('description', db.String(191))
     extras = db.relationship('AkoArticleExtra', backref='prop', lazy='joined')
 
     def __str__(self):
-        return self.name
+        return self.name if not self.description else self.description
 
 
 @create_table('article_extra_create_table.sql')

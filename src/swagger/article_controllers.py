@@ -50,6 +50,7 @@ def _fill_article_info(article: AkoArticle, language: AkoLang):
         ],
         "img_url": "string",
         "img_type": 0,
+        "cover_name": None,
         "title": "string",
         "description": "string",
         "google_translation": False,
@@ -70,6 +71,8 @@ def _fill_article_info(article: AkoArticle, language: AkoLang):
             s['img_url'] = _find_image_in_article(article, int(e.val)).get_url()
         if e.prop.name == 'google_translate_%s' % language.name:
             s['google_translation'] = bool(e.val)
+        if e.prop.name == 'cover_name_%s' % language.name:
+            s['cover_name'] = e.val
     c = sql_alchemy.filter_lang_id(article.content, language.id)
     s['description'] = c.description
     s['title'] = c.title

@@ -2,7 +2,7 @@
 import flask_admin as admin
 
 from admin.database_view import CommonDatabase, MetaDatabase, LangDatabase, ImageFileDatabase, ArticleDatabase, \
-    TagDatabase
+    TagDatabase, ArticleMetaDatabase
 from sql_alchemy.databases import AkoSiteMeta, AkoLang, AkoSettings, AkoImage, AkoArticle, AkoTag, AkoArticleExtraMeta
 
 
@@ -31,5 +31,5 @@ def init_console(app, db):
         TagDatabase(AkoTag, db.session, category=Cats.databases)
     )
     console.add_view(
-        CommonDatabase(AkoArticleExtraMeta, db.session, category=Cats.databases)
+        ArticleMetaDatabase(AkoArticleExtraMeta, db.session, category=Cats.databases)
     )

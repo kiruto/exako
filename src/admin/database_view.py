@@ -116,3 +116,8 @@ class TagDatabase(sqla.ModelView):
     def get_column_names(self, only_columns, excluded_columns):
         only_columns += ['sample']
         return super().get_column_names(only_columns, excluded_columns)
+
+
+class ArticleMetaDatabase(sqla.ModelView):
+
+    column_editable_list = ['description']
