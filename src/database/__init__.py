@@ -32,7 +32,7 @@ def exec_blocks(query_block: str):
             try:
                 cursor.execute(cmd)
             except MariaDB.OperationalError as msg:
-                print_stack_trace()
+                # print_stack_trace()
                 print('skipped: %s \n %s' % (msg, cmd))
 
 

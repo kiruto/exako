@@ -75,7 +75,7 @@ def get_abs_image_upload_path():
 
 
 def get_raw_file_url(*args):
-    'img/201612/2016_12_23-15_45_45-b_j1mwo4_400x400.png'
+    # example: 'img/201612/2016_12_23-15_45_45-b_j1mwo4_400x400.png'
     return GIT_RAW_FILE_CDN + ('/'.join(args))
 
 
