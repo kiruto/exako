@@ -67,4 +67,4 @@ class Serv:
             config.DEBUG = True
             self.start_service(True)
         else:
-            print('Unknown argument: %s' % self.args[1])
+            raise SystemExit('Unknown argument: %s' % self.args[1])

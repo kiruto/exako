@@ -16,14 +16,14 @@ class Cryptor(object):
 
     @classmethod
     def _pad_string(cls, in_string):
-        '''Pad an input string according to PKCS#7'''
+        """Pad an input string according to PKCS#7"""
         in_len = len(in_string)
         pad_size = cls.BLOCK_SIZE - (in_len % cls.BLOCK_SIZE)
         return in_string.ljust(in_len + pad_size, chr(pad_size))
 
     @classmethod
     def _unpad_string(cls, in_string):
-        '''Remove the PKCS#7 padding from a text string'''
+        """Remove the PKCS#7 padding from a text string"""
         in_len = len(in_string)
         pad_size = ord(in_string[-1])
         if pad_size > cls.BLOCK_SIZE:
